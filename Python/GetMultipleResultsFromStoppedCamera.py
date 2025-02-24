@@ -4,7 +4,8 @@
 Simple example that connects to first DataRay device found on system, changes
 some settings, and runs camera until a valid image is retrieved. The example
 then prints out some of the calculated results and generates a plot
-of the 2D image with the major and minor profiles.
+of the 2D image with the major and minor profiles. Finally, this example will
+save an HDF5 file on the LaserLink server.
 
 Search for #TODO for sections of code that may need to be changed for your
 application
@@ -122,6 +123,14 @@ def main():
     ax_minor.set_title("Minor Axis")
     ax_minor.set_xlabel("um")
     ax_minor.set_ylabel("Intensity (ADU)")
+    
+    #Save image as HDF5 file
+    #TODO: Change this to a path that LaserLink has write access to. This location
+    #needs to be on the server PC
+    file_path=b"C:\\Users\\rdragone\\AppData\\Local\\DataRay Inc\\asdf.h5"
+    #path names need to be Base64 encoded to send over HTTP
+    encoded_bytes = base64.urlsafe_b64encode(file_path)
+    print((requests.get(url + "/SaveToHDF5/"+device_id+"/"+str(encoded_bytes.decode()))).text)
 
     plt.show()
     #Stop and disconnect camera
