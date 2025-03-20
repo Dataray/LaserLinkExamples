@@ -21,7 +21,7 @@ def main():
 
     #TODO: Change this to the appropriate url and port for your network setup.
     #Using localhost in lieu of an IP address will considerable overhead
-    url = "http://192.168.7.214:18080"
+    url = "http://192.168.5.222:18080"
 
     deviceList=requests.get(url + "/RefreshDeviceList").text
     print(deviceList)
@@ -79,7 +79,8 @@ def main():
     while(True):
         try:
             result_str=requests.get(url + "/GetResults/"+device_id).text
-            if result_str =="Invalid image.":
+            if result_str.startswith("Invalid image."):
+                print(result_str)
                 ax.set_title("Invalid image detected. Pausing data collection.")
                 fig.canvas.draw()
                 fig.canvas.flush_events()
